@@ -1,0 +1,23 @@
+env:
+  TERM: alacritty
+window:
+  dimensions:
+    columns: 50
+    lines: 12
+  padding:
+    x: 60
+    y: 60
+font:
+  size: 13.5
+  offset:
+    x: 0
+    y: 10
+  normal:
+    family: Jet Brains Mono
+    style: Regular
+  bold:
+    family: Jet Brains Mono
+    style: Bold
+  italic:
+    family: Jet Brains Mono
+    style: Italic
