@@ -3,14 +3,12 @@ if not ok then
     return
 end
 
-local diagnostics = vim.lsp.diagnostic.on_publish_diagnostics
-
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(diagnostics, {
-    signs = true,
-    virtual_text = false,
-    update_in_insert = true,
+vim.diagnostic.config {
     underline = true,
-})
+    virtual_text = false,
+    signs = true,
+    update_in_insert = true,
+}
 
 -- Null is a standalone server, so it needs it's own special config
 null_ls.setup {
@@ -19,14 +17,16 @@ null_ls.setup {
             vim.cmd [[
             augroup Format
                 au! * <buffer>
-                au BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)
+                au BufWritePre <buffer> lua vim.lsp.buf.formatting()
             augroup END
         ]]
         end
     end,
+    diagnostics_format = '[#{c}] #{m} (#{s})',
     sources = {
         null_ls.builtins.formatting.prettierd,
         null_ls.builtins.formatting.eslint_d,
+        null_ls.builtins.diagnostics.eslint_d,
         null_ls.builtins.formatting.clang_format,
         null_ls.builtins.formatting.goimports,
         null_ls.builtins.formatting.gofmt,
