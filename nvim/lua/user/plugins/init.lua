@@ -14,7 +14,6 @@ if fn.empty(fn.glob(install_dir)) > 0 then
     if not ok then
         return
     end
-    -- execute 'packadd packer.nvim'
 end
 
 local ok, packer = pcall(require, 'packer')
@@ -35,7 +34,6 @@ packer.startup(function(use)
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
     use 'windwp/nvim-autopairs'
-    -- use 'noahfrederick/vim-noctu'
     use {
         'nvim-treesitter/nvim-treesitter',
     }
@@ -61,8 +59,8 @@ end)
 
 config 'nvim-cmp'
 config 'nvim-autopairs'
-config 'nvim-lspconfig'
 config 'nvim-treesitter'
 config 'nvim-telescope'
 config 'nvim-lsp-installer'
+config 'null_ls'
 config 'comment'
