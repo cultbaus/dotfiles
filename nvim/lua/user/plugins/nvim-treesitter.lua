@@ -22,7 +22,6 @@ treesitter.setup {
         'tsx',
         'javascript',
     },
-    indent = { enable = true },
     highlight = {
         enable = true,
         use_languagetree = true,
