@@ -8,16 +8,11 @@ M.setup = function(config)
                 client.config.flags.allow_incremental_sync = true
             end
 
-            local ts_utils = require 'nvim-lsp-ts-utils'
-
-            ts_utils.setup {
-                eslint_bin = 'eslint_d',
-                eslint_enable_diagnostics = true,
-            }
-
-            ts_utils.setup_client(client)
             config.on_attach(client)
         end,
+        handlers = {
+            ['textDocument/publishDiagnostics'] = function() end,
+        },
     }
 end
 
