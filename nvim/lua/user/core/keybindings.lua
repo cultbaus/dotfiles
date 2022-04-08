@@ -1,6 +1,6 @@
 local utils = require 'user.utils'
 
-vim.g.mapleader = ' '
+vim.g.mapleader = '\\'
 
 -- Enter normal mode
 utils.inoremap('jk', '<ESC>')
@@ -14,6 +14,9 @@ utils.nnoremap('<leader>n', ':noh<CR>')
 
 -- Reload file
 utils.nnoremap('<leader>r', ':e!<CR>')
+
+-- Neogit
+utils.snnoremap('<leader>gs', '<cmd>lua require"neogit".open()<CR>')
 
 -- LSP
 utils.snnoremap('gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
