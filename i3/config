@@ -5,6 +5,7 @@ floating_modifier $mod
 # Applications
 bindsym $mod+Return exec --no-startup-id alacritty
 bindsym $mod+d exec --no-startup-id dmn
+bindsym Print exec stc
 
 # Controls
 bindsym $mod+Shift+space floating toggle
@@ -83,7 +84,6 @@ bindsym $mod+r mode "resize"
 exec_always --no-startup-id xrdb ~/.Xresources
 exec_always --no-startup-id picom -b -G
 exec_always --no-startup-id xset r rate 200 25
-exec_always --no-startup-id hsetroot -solid '#121818'
 
 # Aesthetics
 for_window [class="^.*"] border pixel 0
