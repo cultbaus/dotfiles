@@ -2,6 +2,9 @@ local utils = require 'user.utils'
 
 vim.g.mapleader = '\\'
 
+-- Terminal tab
+utils.snnoremap('<leader>te', '<cmd>lua require"user.core.compiler".start_terminal()<CR>')
+
 -- Enter normal mode
 utils.inoremap('jk', '<ESC>')
 

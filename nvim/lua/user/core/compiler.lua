@@ -20,6 +20,13 @@ local terminal_wrapper = function(command, file)
     vim.cmd 'startinsert'
 end
 
+local tab_terminal = function()
+    vim.cmd 'tabnew'
+    vim.cmd 'term'
+    vim.cmd 'file Terminal'
+    vim.cmd 'startinsert'
+end
+
 M.compile_and_run = function()
     local filetype = vim.bo.filetype
     if commands[filetype] then
@@ -27,6 +34,10 @@ M.compile_and_run = function()
     else
         print(fmt('Filetype "%s" is not yet supported.', filetype))
     end
+end
+
+M.start_terminal = function()
+    tab_terminal()
 end
 
 return M
