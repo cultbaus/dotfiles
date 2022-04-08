@@ -1,5 +1,10 @@
 ### Dotfiles
 
-Mostly just a glorified Neovim configuration. I keep a pretty minimal environment to eliminate distractions while I am working, so there's nothing too extraordinary here. No tmux configuration as I've started using [tabs][1] a lot more in my workflow.
+An elaborate neovim configuration
 
-[1]: https://neovim.io/doc/user/tabpage.html
+<h1 align="center">
+    <a href="https://github.com/cultbaus/dotfiles">
+        <img alt="dotfiles" src="https://raw.githubusercontent.com/cultbaus/dotfiles/main/.github/images/ss.png" with="960" />
+    </a>
+</h1>
+
