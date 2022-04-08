@@ -53,6 +53,7 @@ packer.startup(function(use)
     }
     use 'numToStr/Comment.nvim'
     use 'williamboman/nvim-lsp-installer'
+    use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
 
     packer.install()
 end)
@@ -64,3 +65,4 @@ config 'nvim-telescope'
 config 'nvim-lsp-installer'
 config 'null_ls'
 config 'comment'
+config 'neogit'
