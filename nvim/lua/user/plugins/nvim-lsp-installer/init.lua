@@ -7,13 +7,12 @@ local path = (...):gsub('%.init%', '')
 local servers = path .. '.servers'
 local config = require(path .. '.config')
 
-local installed = {
-    'cmake',
-    'bashls',
-}
 local function should_install()
+    local installed = {
+        'cmake',
+        'bashls',
+    }
     local fn = vim.fn
-
     if fn.executable 'node' then
         table.insert(installed, 'tsserver')
     end
@@ -23,30 +22,22 @@ local function should_install()
     if fn.executable 'cargo' then
         table.insert(installed, 'rust_analyzer')
     end
-
-    -- TODO: Haskell is a pain in the ass to manage on Arch, so I am skipping it for now
-    -- if fn.executable 'ghc' then
-    --     table.insert(installed, 'hls')
-    -- end
-
     if fn.executable 'luajit' then
         table.insert(installed, 'sumneko_lua')
     end
+    return installed
 end
 
-should_install()
-
-for _, name in pairs(installed) do
+for _, name in pairs(should_install()) do
     local server_is_found, server = lsp_installer.get_server(name)
     if server_is_found and not server:is_installed() then
-        print('Installing ' .. name)
         server:install()
     end
 end
 
 local server_opts = {}
 
-for _, name in pairs(installed) do
+for _, name in pairs(should_install()) do
     local server_ok, module = pcall(require, servers .. '.' .. name)
     if server_ok then
         server_opts[name] = function(opts)
