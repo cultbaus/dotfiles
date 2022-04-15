@@ -35,6 +35,5 @@ null_ls.setup {
         null_ls.builtins.formatting.shfmt.with {
             args = { '-i', '2', '-ci' },
         },
-        null_ls.builtins.formatting.rufo,
     },
 }
