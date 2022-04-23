@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# shellcheck disable=SC1090
+[ -f ~/.cache/pap/colors ] && . ~/.cache/pap/colors
+
+dmenu_run -l 1 \
+  -nb "${color0:=#777777}" \
+  -nf "${color15:=#000000}" \
+  -sb "${color15:=#777777}" \
+  -sf "${color0:=#FFFFFF}" \
+  -fn "JetBrainsMono:pixelsize=32"

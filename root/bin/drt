@@ -1,0 +1,40 @@
+#!/bin/sh
+
+#
+# drt - dirty directory detector
+#
+
+log() {
+  printf '%s: %s\n' "$1" "${2##*/}"
+}
+
+main() {
+  [ -z "$DRT_PATH" ] && {
+    printf '%s\n' "DRT_PATH is not set."
+    exit
+  }
+
+  for dir in $DRT_PATH/*/; do
+    (
+      [ -d "$dir" ] || {
+        log "Not a directory" "$dir"
+      }
+
+      cd "$dir" 2>/dev/null || {
+        log "Failed to change directory to" "$dir"
+        exit
+      }
+
+      result=${PWD##*/}
+
+      command git rev-parse --is-inside-work-tree 1>/dev/null 2>/dev/null || {
+        log "Not a git directory" "$result"
+        exit
+      }
+
+      [ -z "$(git status --short 2>/dev/null)" ] || log "dirty" "$result"
+    )
+  done
+}
+
+main

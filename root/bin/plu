@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#
+# plu - plug update
+#
+
+do_or_die() {
+  cd "$PLUG" || exit 1
+}
+
+plug_update() {
+  (
+    do_or_die
+    git submodule update --remote --merge
+    git add .
+    git commit -m "Bump @ $(date '+%Y/%m/%d %H:%M')"
+  )
+}
+
+main() {
+  [ -z "$PLUG" ] && {
+    printf '%s\n "PLUG is not set."'
+    exit 1
+  }
+
+  plug_update
+}
+
+main

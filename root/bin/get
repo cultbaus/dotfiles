@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#
+# get - tiny system info
+#
+
+trap "printf '[?25h[?7h\n'" EXIT INT
+
+tput civis
+
+OS=$(cat /etc/*-release | grep ^NAME= | cut -d '"' -f 2)
+PACKAGES=$(pacman -Q | wc -l)
+SHELL="bash"
+
+bc=$(tput bold)    # bold
+c6=$(tput setaf 6) # cyan
+c7=$(tput setaf 7) # white
+rc=$(tput sgr0)    # reset
+
+lc=${bc}${c6} # labels
+tc=${bc}${c7} # text
+
+clear
+
+echo "${lc}OS:${rc}       ${tc}${OS}${rc}
+${lc}SHELL:${rc}    ${tc}${SHELL}${rc}
+${lc}PACKAGES:${rc} ${tc}${PACKAGES}${rc}"
+
+read -r _
