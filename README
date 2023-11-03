@@ -1,0 +1,18 @@
+dotfiles
+--------
+os:     void
+editor: nvim
+shell:  bash
+wm:     dswm[1]
+term:   st
+
+colors
+------
+#181818
+#E0E0E0
+
+outlook
+-------
+grim
+
+[1]: https://github.com/cultbaus/dswm

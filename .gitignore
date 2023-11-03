@@ -1,0 +1,8 @@
+*
+!.bin/
+!.bashrc
+!.bash_profile
+!.config/
+!.gitignore
+!.Xresources
+!README

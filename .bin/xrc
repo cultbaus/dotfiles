@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#
+# xrc - define nvim palette from ~/.Xresources
+#
+
+OUT="$HOME/.config/nvim/init.lua"
+
+cp $OUT.in $OUT.tmp
+
+for i in {0..15}
+do
+    COLOR=`xrdb -query | awk '/\*.color'"$i"':/ {print substr($2,2) }'`
+    sed -i "s/c%$i%/\#$COLOR/g" $OUT.tmp
+done
+
+rm $OUT
+mv $OUT.tmp $OUT

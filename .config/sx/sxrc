@@ -1,0 +1,8 @@
+#!/bin/sh
+
+xrdb -merge ~/.Xresources
+xset r rate 200 40
+xsetroot -solid '#F5F5F5'
+xrc
+
+dswm

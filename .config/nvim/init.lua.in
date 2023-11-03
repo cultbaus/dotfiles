@@ -1,0 +1,31 @@
+C = {
+    palette = {
+        base00 = 'c%0%',
+        base08 = 'c%8%',
+
+        base01 = 'c%1%',
+        base09 = 'c%9%',
+
+        base02 = 'c%2%',
+        base0A = 'c%10%',
+
+        base03 = 'c%3%',
+        base0B = 'c%11%',
+
+        base04 = 'c%3%',
+        base0C = 'c%12%',
+
+        base05 = 'c%5%',
+        base0D = 'c%13%',
+
+        base06 = 'c%6%',
+        base0E = 'c%14%',
+
+        base07 = 'c%7%',
+        base0F = 'c%15%',
+    }
+}
+
+
+require 'user.core'
+require 'user.plugin'
