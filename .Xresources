@@ -1,3 +1,5 @@
+*font: "Liberation Mono:pixelsize=24:antialias=true:autohint=true";
+
 *.background: #181818
 *.foreground: #E0E0E0
 

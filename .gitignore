@@ -2,7 +2,8 @@
 !.bin/
 !.bashrc
 !.bash_profile
-!.config/
+!.config/nvim
+!.config/sx
 !.gitignore
 !.Xresources
 !README

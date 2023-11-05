@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ -f $HOME/.config/secrets/.secretsrc ] && . $HOME/.config/secrets/.secretsrc
+
 export PATH
 export PS1='> '
 export EDITOR=nvim
