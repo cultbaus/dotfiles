@@ -1,9 +1,9 @@
 *
+!.gitignore
 !.bin/
 !.bashrc
 !.bash_profile
 !.config/nvim
 !.config/sx
-!.gitignore
+!.txt/
 !.Xresources
-!README

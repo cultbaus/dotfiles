@@ -1,6 +1,5 @@
 #!/bin/bash
 
-[ -f $HOME/.config/secrets/.secretsrc ] && . $HOME/.config/secrets/.secretsrc
 
 export PATH
 export PS1='> '
@@ -8,8 +7,8 @@ export EDITOR=nvim
 export CFLAGS='-O3 -pipe -march=native'
 export CXXFLAGS='$CFLAGS'
 export MAKEFLAGS='-j$(nproc)'
-export HISTFILE=/tmp/$USER_bash_history
-export LESSHISTFILE=/tmp/$USER_less_history
+export HISTFILE=/tmp/bash_history.$(whoami)
+export LESSHISTFILE=/tmp/less_history.$(whoami)
 
 PATH=$PATH:$HOME/.local/share/bin
 PATH=$PATH:$HOME/.go/bin

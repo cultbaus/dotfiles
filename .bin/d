@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function dots { git --git-dir=$HOME/.dotfiles --work-tree=$HOME "$@"; }
+
+command=$1
+shift
+
+case "$command" in
+    # a|add) dots add $@ ;;
+    # d|diff) dots diff $@ ;;
+    # s|status) dots status ;;
+    *) dots "$@";;
+esac

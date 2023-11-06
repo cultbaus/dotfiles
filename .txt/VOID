@@ -1,0 +1,146 @@
+# this write-up assumes that you are installing on semi-opinionated hardware
+# and that you have already downloaded and flashed a usb to boot from.
+
+# opinions: intel, wifi, glibc, nvme
+
+# login as the root user
+username: root
+password: voidlinux
+
+# drop into a bash shell
+$ bash
+
+# wipe existing disk [note: guide assumes the disk is at /dev/nvme0n1, ymmv]
+$ wipefs -af /dev/nvme0n1p1
+
+# partition [fdisk]
+# note: doing this section from memory, but you want your efi partition on
+# /dev/nvme0n1p1 and root on /dev/nvme0n1p2
+$ fdisk /dev/nvme0n1
+> g
+> n, 1, enter, +512MB, enter
+> n, 2, enter, enter,  enter
+> t, 1, 1, enter
+> w
+
+# create filesystem
+$ mkfs.vfat /dev/nvme0n1p1
+$ mkfs.ext4 /dev/nvme0n1p2
+
+# mount filesystems
+$ mount /dev/nvme0n1p2 /mnt
+$ mkdir -p /mnt/boot/efi
+$ mount /dev/nvme0n1p1 /mnt/boot/efi
+
+# wifi [optional]
+$ iw dev # check name of wireless interface
+$ SSID=<your SSID>
+$ PSK=<your wifi password>
+$ wpa_passphrase $SSID $PASSWORD >> /etc/wpa_supplicant/wpa_supplicant.conf
+$ wpa_supplicant -B -i <your interface> -c /etc/wpa_supplicant/wpa_supplicant.conf
+
+# bootstrap
+$ REPO=https://repo-default.voidlinux.org/current
+$ ARCH=x86_64
+$ XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal bash ncurses opendoas e2fsprogs eudev
+
+# chroot
+$ xchroot /mnt /bin/bash
+
+# update rc.conf
+$ echo <your hostname> > /etc/hostname
+$ cat <<EOF > /etc/rc.conf
+    # /etc/rc.conf - system configuration
+    HARDWARECLOCK="UTC"
+    TTYS=2
+EOF
+
+# uncomment locales [note: nvi is included with base-minimal, if you want another editor, install one now]
+$ nvi /etc/defaults/libc-locales
+
+# generate
+$ xbps-reconfigure -f glibc-locales
+
+# configure fstab
+$ cp /proc/mounts /etc/fstab
+$ nvi /etc/fstab
+
+# note: to read your uuid into nvi:
+:read !blkid -s UUID -o value /dev/nvme0n1p1
+:read !blkid -s UUID -o value /dev/nvme0n1p2
+
+```
+UUID=6914[...] /boot/efi vfat  rw,relatime,[...]     0 2
+UUID=dc1b[...] /         ext4  rw,relatime           0 1
+tmpfs          /tmp      tmpfs defaults,nosuid,nodev 0 0
+```
+
+# install kernel [xbps-query -R linux to get version]
+$ xbps-install -Sy linux6.5 linux6.5-headers linux-firmware-intel linux-firmware-network dracut
+$ echo "hostonly=yes" > /etc/dracut.conf.d/override.conf
+
+# configure EFISTUB [follow the wiki if you'd prefer to use GRUB]
+$ xbps-install efibootmgr
+$ efibootmgr --disk /dev/nvme0n1 --part 1 --create --label "Void" --loader /vmlinuz --unicode "root=PARTUUID=$(blkid -s PARTUUID -o value /dev/nvme0n1p2) rw quiet loglevel=3 initrd=initramfs.img"
+
+# copy over the kernel & initramfs [dracut manages this for us]
+$ cp /boot/vmlinuz* /boot/efi/vmlinuz
+$ cp /boot/initramfs* /boot/efi/initramfs.img
+
+# lock up root
+$ passwd root
+$ chown root:root /
+$ chmod 755 /
+
+# install wifi things [optional, alternatively use wpa_supplicant instead of iwd]
+$ xbps-install iw iwd iproute2 iputils dbus dhcpcd openresolv
+
+# reconfigure
+$ xbps-reconfigure -fa
+
+# reboot
+$ exit
+$ umount -R /mnt
+$ shutdown -r now
+
+# login with root account, enable services
+$ ln -srf /etc/sv/dbus /var/service
+$ ln -srf /etc/sv/dhcpcd /var/service
+$ ln -srf /etc/sv/iwd /var/service
+
+# connect to wifi
+$ iwctl --passphrase $PASSWORD station $DEVICE connect $SSID
+
+# verify [this could take a few seconds to connect, check the iwd service status if it's not working]
+$ ping 8.8.8.8
+
+# update iwd conf
+$ cat <<EOF > /etc/iwd/main.conf
+    [General]
+    EnableNetworkConfiguration=true
+    [Network]
+    NameResolvingService=resolvconf
+EOF
+
+# create a user
+$ useradd -m -s /bin/bash -U -G audio,disk,input,network,storage,users,video,wheel $USERNAME
+$ passwd $USERNAME
+
+# all my homies hate sudo
+$ echo "ignorepkg=sudo" > /etc/xbps.d/10-ignore.conf
+$ echo "permit :wheel" > /etc/doas.conf
+$ echo "permit persist :wheel" >> /etc/doas.conf
+
+# that's it, at this point you have a functional base system and you can do
+# whatever you want if you followed this guide per-command then you'll need to
+# manage your own kernel updates, or alternatively configure the kernel
+# post-install hook mentioned in the efibootmgr readme, but here are some
+# suggestions for what to do next:
+
+$ xbps-install -S base-devl cmake curl gcc git kbd less man-pages
+$ mkdir -p /usr/local/src && cd /usr/local/src
+$ git clone https://github.com/neovim/neovim --depth=1
+$ git clone https://github.com/cultbaus/dswm
+$ git clone https://github.com/cultbaus/st
+
+# follow the dependency chain for the above tools, you'll need a whole bunch of xlib/xcb/font stuff
