@@ -1,0 +1,21 @@
+#!/bin/bash
+
+function main {
+    delay=0.05
+
+    while IFS= read -r line || [[ -n "$line" ]]; do
+        for (( i=0; i<${#line}; i++ )); do
+            echo -n "${line:$i:1}"
+            sleep $delay
+        done
+        echo
+        sleep $delay
+    done
+}
+
+
+if [ $# -gt 0 ]; then
+    echo -n "$1" | main
+else
+    main
+fi
