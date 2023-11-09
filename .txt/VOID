@@ -137,10 +137,12 @@ $ echo "permit persist :wheel" >> /etc/doas.conf
 # post-install hook mentioned in the efibootmgr readme, but here are some
 # suggestions for what to do next:
 
-$ xbps-install -S base-devl cmake curl gcc git kbd less man-pages
-$ mkdir -p /usr/local/src && cd /usr/local/src
+$ xbps-install -S base-devel clang clang-tools-extra cmake curl gcc go git kbd less mdocl
+
+# build
 $ git clone https://github.com/neovim/neovim --depth=1
-$ git clone https://github.com/cultbaus/dswm
+$ git clone https://github.com/cultbaus/sowm
 $ git clone https://github.com/cultbaus/st
 
 # follow the dependency chain for the above tools, you'll need a whole bunch of xlib/xcb/font stuff
+#
